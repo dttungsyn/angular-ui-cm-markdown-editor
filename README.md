@@ -1,10 +1,10 @@
 This script combines some script i found on internet, using popular libraries such as [marked](https://github.com/chjj), [codemirror](https://github.com/chjj), [highlightjs](https://github.com/chjj), [lodash](https://github.com/chjj) to provide a simple instant translate [markdown](https://help.github.com/articles/markdown-basics/) syntax to HTML **Editor**, it also provide angular directive option with 2 ways data binding.
 
 #Features
- - #### Instant translation from markdown to HTML.
- - #### Angular directive with 2 ways data binding.
- - #### Toolbar buttons self designed independently
- - #### Auto generate Table of Contens
+ - Instant translation from markdown to HTML.
+ - Angular directive with 2 ways data binding.
+ - Toolbar buttons self designed independently
+ - Auto generate Table of Contens
 
 <!--more-->
 #Acknowledgement 
