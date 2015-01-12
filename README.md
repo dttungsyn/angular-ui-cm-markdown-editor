@@ -51,3 +51,4 @@ $(document).ready(function(){
 })
 </script>
 ```
+See an active [Demo here](http://dttungsyn.github.io/angular-ui-cm-markdown-editor/)
