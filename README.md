@@ -9,7 +9,7 @@ This script combines some script i found on internet, using popular libraries su
 <!--more-->
 #Acknowledgement 
  - [Marked](https://github.com/chjj), [Codemirror](https://github.com/chjj), [Highlightjs](https://github.com/chjj)
- - [Markdown Editor](http://jbt.github.io/markdown-editor/) for angular directive source code
+ - [Markdown Editor](http://jbt.github.io/markdown-editor/) for codemirror - markdown solution
  - 
 
 
