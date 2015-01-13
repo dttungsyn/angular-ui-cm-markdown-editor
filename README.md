@@ -33,13 +33,13 @@ Basically include these *Css* & *Javascript* libaries
 
 And then my javascript and css files
 
-```js
+```html
 <link rel="stylesheet" href="css/ui-codemirror-markdown-editor.css" />
 <script src="js/ui-codemirror-markdown-editor.js"></script>
 ```
 
 Basic usage is pretty simple
-```js
+```html
 <div class="row contents">
   <div id="codemirror-markdown-editor"></div>
 </div>
@@ -51,3 +51,5 @@ $(document).ready(function(){
 })
 </script>
 ```
+
+See active [Demo](http://dttungsyn.github.io/angular-ui-cm-markdown-editor) here
