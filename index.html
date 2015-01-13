@@ -46,7 +46,7 @@
 
   <div class="jumbotron">
     <h1>Simple Markdown Editor</h1>
-    <p class="lead">Easily create markdown editor with separately designed helping syntax toolbar, auto generate table contents from heading elements, along with Angular directive with 2 ways data-binding model option!</p>
+    <p class="lead">Easily create markdown editor with separately designed helping syntax toolbar, auto generate table contents from heading, along with Angular directive with 2 ways data-binding model option!</p>
     <p><a class="btn btn-lg btn-success" href="https://github.com/dttungsyn/angular-ui-cm-markdown-editor" role="button">Git Repository</a></p>
     <section class="download" style="">
         <i class="fa fa-download"></i>
@@ -171,11 +171,39 @@ $(document).ready(function(){
     
   	<div id="codemirror-markdown-editor-2"></div>
   </div>
-  <h4><a style="cursor: pointer"><i class="fa fa-eye">&nbsp;</i>Source</a></h4>
+  <p>In this example, i created a toolbar buttons using bootstrap and font-awesome, pass its selector string in as a config option <code>{toolbarContainer: '.btn-toolbar'}</code>. 
+  Inside the toolbar, only buttons that has attribute <code>data-editorbtn</code> make sense to our editor, and its value specify its corresponding function. 
+  Visually, you can design the toolbar for yourself, and put it any where you want. </p>
+  <h4><a style="cursor: pointer">Source</a></h4>
   <pre><code class="javascript">codemirrorOptions = {
   toolbarContainer: '.btn-toolbar'
 };
 new MyCodemirrorUI( $('#codemirror-markdown-editor-2'), codemirrorOptions );</code></pre>
+
+  <p>Here is the list of functions provided:</p>
+  
+  <table>
+	<thead>
+	<tr>
+	<th>Value</th>
+	<th>Function</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>bold</td>
+	<td>make text <strong>bold</strong></td>
+	</tr>
+	<tr>
+	<td>italic</td>
+	<td>make text <em>italic</em></td>
+	</tr>
+	<tr>
+	<td>Pipe</td>
+	<td></td>
+	</tr>
+	</tbody>
+  </table>
 
   <h2>Generate Table Contents</h2>
   

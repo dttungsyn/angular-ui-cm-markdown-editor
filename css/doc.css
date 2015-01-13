@@ -108,3 +108,12 @@ section.download i.fa{
 	top: 5px;
 	position: relative;
 }
+
+/*
+ * table
+ */
+td, th {
+	vertical-align: top;
+	padding: 4px 10px;
+	border: 1px solid #bbb;
+}
