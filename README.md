@@ -40,9 +40,7 @@ And then my javascript and css files
 
 Basic usage is pretty simple
 ```html
-<div class="row contents">
-  <div id="codemirror-markdown-editor"></div>
-</div>
+<div id="codemirror-markdown-editor"></div>
 
 <script type="text/javascript">
 $(document).ready(function(){
