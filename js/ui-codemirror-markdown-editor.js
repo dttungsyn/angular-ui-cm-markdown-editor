@@ -3,9 +3,9 @@
 /**
  * Binds a CodeMirror widget to a <textarea> element.
  */
-angular.module('ui.codemirror', [])
+angular.module('ui-codemirror-markdown', [])
   .constant('uiCodemirrorConfig', {})
-  .directive('uiCodemirror', uiCodemirrorDirective);
+  .directive('uiCodemirrorMarkdown', uiCodemirrorDirective);
 
 /**
  * @ngInject
@@ -19,7 +19,7 @@ function uiCodemirrorDirective($timeout, uiCodemirrorConfig) {
 
       // Require CodeMirror
       if (angular.isUndefined(window.CodeMirror)) {
-        throw new Error('ui-codemirror need CodeMirror to work... (o rly?)');
+        throw new Error('ui-codemirror-markdown need CodeMirror to work... (o rly?)');
       }
 
       //return postLink;
@@ -36,7 +36,7 @@ function uiCodemirrorDirective($timeout, uiCodemirrorConfig) {
     var codemirrorOptions = angular.extend(
       { value: iElement.text() },
       uiCodemirrorConfig.codemirror || {},
-      scope.$eval(iAttrs.uiCodemirror),
+      scope.$eval(iAttrs.uiCodemirrorMarkdown),
       scope.$eval(iAttrs.uiCodemirrorOpts)
     );
 
@@ -45,7 +45,7 @@ function uiCodemirrorDirective($timeout, uiCodemirrorConfig) {
     
     configOptionsWatcher(
 	  mcu.codemirror,
-      iAttrs.uiCodemirror || iAttrs.uiCodemirrorOpts,
+      iAttrs.uiCodemirrorMarkdown || iAttrs.uiCodemirrorOpts,
       scope
     );
 

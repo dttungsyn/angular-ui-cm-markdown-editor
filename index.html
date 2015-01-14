@@ -25,12 +25,9 @@
 
 <!--docs style-->
 <link rel="stylesheet" href="css/doc.css" />
+<script src="js/controller.js"></script>
 
-<style>
-
-</style>
-
-<body>
+<body data-ng-app="MyModule">
 
 <div class="container">
   <div class="header">
@@ -67,19 +64,23 @@
 </li>
 </ul>
   
-  <h2>Pre - Install</h2>
-  <pre><code class="pre-install html">&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/codemirror.min.css">
-&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
-
-&lt;script src="https://code.jquery.com/jquery-2.1.3.min.js">&lt;/script>
+  <h2>Installation</h2>
+  <pre><code class="pre-install html">&lt;script src="https://code.jquery.com/jquery-2.1.3.min.js">&lt;/script>
 &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.js">&lt;/script>
 &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js">&lt;/script>
 
+&lt;!-- Codemirror stuffs, and highlight -->
+&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/codemirror.min.css">
+&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
 &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/codemirror.js">&lt;/script>
 &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/addon/mode/overlay.min.js">&lt;/script> 
 &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/mode/markdown/markdown.min.js">&lt;/script> 
 &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/mode/gfm/gfm.js">&lt;/script>
-&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js">&lt;/script></code></pre>
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js">&lt;/script>
+
+&lt;!-- ui-codemirror-markdown-editor -->
+&lt;link rel="stylesheet" href="css/ui-codemirror-markdown-editor.css" />
+&lt;script src="js/ui-codemirror-markdown-editor.js">&lt;/script></code></pre>
   
   <h2>Basic Use</h2>
   <div class="row contents" style="margin: 5px 0;">
@@ -154,10 +155,6 @@ $(document).ready(function(){
 	    </button>
 	  </div>
 	  
-<!-- 	  <div class="btn-group pull-right" role="group" aria-label="Third group">
-	    <button mean-token="'edit-submit'" type="submit" class="btn btn-info">Submit</button>
-	  </div> -->
-	  
 	  <div class="btn-group pull-right" role="group" aria-label="Third group">
 	    <button type="button" data-editorbtn="fullscreen" class="btn btn-default">
 	        <i class="fa fa-arrows-alt"></i>
@@ -172,8 +169,10 @@ $(document).ready(function(){
   	<div id="codemirror-markdown-editor-2"></div>
   </div>
   <p>In this example, i created a toolbar buttons using bootstrap and font-awesome, pass its selector string in as a config option <code>{toolbarContainer: '.btn-toolbar'}</code>. 
-  Inside the toolbar, only buttons that has attribute <code>data-editorbtn</code> make sense to our editor, and its value specify its corresponding function. 
+  Inside the toolbar, only buttons that has attribute <code>data-editorbtn</code> make sense to our editor, and its value specify its corresponding function. Ex: 
+  <code>&lt;a data-editorbtn="h1">&lt;h1>Heading 1&lt;/h1>&lt;/a></code>.
   Visually, you can design the toolbar for yourself, and put it any where you want. </p>
+  
   <h4><a style="cursor: pointer">Source</a></h4>
   <pre><code class="javascript">codemirrorOptions = {
   toolbarContainer: '.btn-toolbar'
@@ -183,31 +182,91 @@ new MyCodemirrorUI( $('#codemirror-markdown-editor-2'), codemirrorOptions );</co
   <p>Here is the list of functions provided:</p>
   
   <table>
-	<thead>
-	<tr>
-	<th>Value</th>
-	<th>Function</th>
-	</tr>
-	</thead>
-	<tbody>
-	<tr>
-	<td>bold</td>
-	<td>make text <strong>bold</strong></td>
-	</tr>
-	<tr>
-	<td>italic</td>
-	<td>make text <em>italic</em></td>
-	</tr>
-	<tr>
-	<td>Pipe</td>
-	<td></td>
-	</tr>
-	</tbody>
+    <thead>
+    <tr>
+    <th>Item</th>
+    <th>Value</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td>h[1-6]</td>
+    <td>Heading element with the level from 1 to 6</td>
+    </tr>
+    <tr>
+    <td>bold</td>
+    <td>make selected text bold</td>
+    </tr>
+    <tr>
+    <td>italic</td>
+    <td>make selected text italic</td>
+    </tr>
+    <tr>
+    <td>strikethrough</td>
+    <td>make selected text strikethrough</td>
+    </tr>
+    <tr>
+    <td>undo</td>
+    <td>step back one step</td>
+    </tr>
+    <tr>
+    <td>redo</td>
+    <td>step forward one step</td>
+    </tr>
+    <tr>
+    <td>list</td>
+    <td>create list</td>
+    </tr>
+    <tr>
+    <td>table</td>
+    <td>create table</td>
+    </tr>
+    <tr>
+    <td>eye</td>
+    <td>change view between markdown, preview or both</td>
+    </tr>
+    <tr>
+    <td>fullscreen</td>
+    <td>make fullscreen view editor</td>
+    </tr>
+    <tr>
+    <td>script</td>
+    <td>create script ( javascript, html, C, java, python,....)</td>
+    </tr>
+    </tbody>
   </table>
 
   <h2>Generate Table Contents</h2>
   
   <h2>Use as Angular directive</h2>
+  <section data-ng-controller="MyController">
+      <div class="row" ng-model="content" ui-codemirror-markdown="editorOptions" style="margin: 5px 0;"></div>
+  </section>
+  
+  <h4><a style="cursor: pointer">Source</a></h4>
+  <p>We have to create a javascript file for definition of Angular module and controller, remember to include <code>ui-codemirror-markdown</code> module.
+  </p>
+  <h5><a style="cursor: pointer">controller.js</a></h5>
+  <pre><code class="javascript">angular.module('MyModule', ['ui-codemirror-markdown'])
+    .controller('MyController', ['$scope', controller]);
+
+function controller($scope){
+    $scope.content = "#This is codemirror";
+    $scope.editorOptions = {
+        lineNumbers: false
+    };
+}</code></pre>
+  
+  <p>Then include javascript file and setup html element</p>
+  <h5><a style="cursor: pointer">html</a></h5>
+  <pre><code class="html">&lt;script src="js/controller.js">&lt;/script>
+&lt;body data-ng-app="MyModule">
+    ...
+    &lt;section data-ng-controller="MyController">
+      &lt;div class="row" ng-model="content" ui-codemirror-markdown="editorOptions">&lt;/div>
+    &lt;/section>
+    ...      
+&lt;/body></code></pre>
   
   <footer class="footer">
     <p>&copy; Company 2014</p>
