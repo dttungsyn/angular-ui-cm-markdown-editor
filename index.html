@@ -284,18 +284,22 @@ $(document).ready(function(){
 
 
     $.get('mdtext.md', {}, function(data){
-        console.log(data);
+        
+        var codemirrorOptions = {
+            lineNumbers: false,
+            initValue: data
+        };
+        new MyCodemirrorUI( $('#codemirror-markdown-editor-1'), codemirrorOptions );
+        
+        codemirrorOptions = {
+            toolbarContainer: '.btn-toolbar',
+            initValue: data
+        };
+        new MyCodemirrorUI( $('#codemirror-markdown-editor-2'), codemirrorOptions );
+        
     });
     
-	var codemirrorOptions = {
-		lineNumbers: false
-	};
-	new MyCodemirrorUI( $('#codemirror-markdown-editor-1'), codemirrorOptions );
 	
-	codemirrorOptions = {
-		toolbarContainer: '.btn-toolbar'
-	};
-	new MyCodemirrorUI( $('#codemirror-markdown-editor-2'), codemirrorOptions );
 	
 	
 })
