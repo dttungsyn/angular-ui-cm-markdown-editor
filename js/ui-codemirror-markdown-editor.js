@@ -313,7 +313,7 @@ MyCodemirrorUI.prototype = {
 		
 		window.codemirror = codemirrot; //debug
 		
-		codemirrot.setValue("##This is codemirror");
+		if (codemirrorOptions.initValue) codemirrot.setValue( codemirrorOptions.initValue );
 		
 		//editor height fit window
 		/*var editorH = $(".CodeMirror-scroll").height();

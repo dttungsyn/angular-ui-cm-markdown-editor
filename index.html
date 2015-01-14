@@ -282,6 +282,11 @@ $(document).ready(function(){
 
 	hljs.initHighlightingOnLoad();
 
+
+    $.get('mdtext.md', {}, function(data){
+        console.log(data);
+    });
+    
 	var codemirrorOptions = {
 		lineNumbers: false
 	};
