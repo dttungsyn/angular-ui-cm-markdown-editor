@@ -26,10 +26,11 @@ tr:nth-child(even) td, tr:nth-child(even) th { background: #eee; }
   border: 1px solid #eee;
   font-size: 12px;
   line-height: 1.5em;
+  height: auto;
 }
 
 .CodeMirror-scroll {
-  min-height: 300px; /* the minimum height */
+  min-height: 500px; /* the minimum height */
 }
 
 .CodeMirror-wrap, .Codemirror-render-html{
