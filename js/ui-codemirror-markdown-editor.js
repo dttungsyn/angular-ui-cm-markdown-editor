@@ -256,7 +256,7 @@ MyCodemirrorUI.defaults = {
     lineNumbers: true,
     mode: 'gfm',
     theme: 'default',
-    minHeight: 20,
+    minHeight: 30,
     viewportMargin: Infinity
 }
 
@@ -270,6 +270,8 @@ MyCodemirrorUI.prototype = {
 		var codemirrot;
 		
 		var codemirrorOptions = $.extend({}, MyCodemirrorUI.defaults, codemirrorOptions);
+		
+		iElement.addClass('ui-codemirror-markdown');
 		
 		if (iElement[0].tagName === 'TEXTAREA') {
 	      // Might bug but still ... not support

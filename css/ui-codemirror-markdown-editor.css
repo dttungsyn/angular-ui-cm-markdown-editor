@@ -30,7 +30,7 @@ tr:nth-child(even) td, tr:nth-child(even) th { background: #eee; }
 }
 
 .CodeMirror-scroll {
-  min-height: 500px; /* the minimum height */
+  min-height: 200px; /* the minimum height */
 }
 
 .CodeMirror-wrap, .Codemirror-render-html{
@@ -51,4 +51,12 @@ tr:nth-child(even) td, tr:nth-child(even) th { background: #eee; }
 	height: 100%;
 	z-index: 99999;
 	overflow: scroll;
+}
+
+.ui-codemirror-markdown:after, .ui-codemirror-markdown:before{
+	display: table;
+	content: " ";
+}
+.ui-codemirror-markdown:after{
+	clear: both;
 }
