@@ -337,11 +337,16 @@ MyCodemirrorUI.prototype = {
 	      }
 	    }
 		
+		if ( codemirrorOptions.tocContainer && typeof(codemirrorOptions.tocContainer) === 'string' ){
+			this.tocEle = $( codemirrorOptions.tocContainer );
+		}
+		
 		//update markdown preview
 		var t = this;
 		codemirrot.on("change", function(cm, chobj) {
 		  
 		  t.htmlRenderElement.html( window.marked( cm.getValue() ) );
+		  if (t.tocEle) t.tocEle.html( window.marked( t.generateTocMD() ) );//TODO
 		});
 		
 		this.codemirror = codemirrot;
@@ -602,6 +607,7 @@ MyCodemirrorUI.prototype = {
 	 */
 	generateTocMD: function(){
 		console.log( this.generate().toc );
+		return this.generate().toc;
 	}
 
 }

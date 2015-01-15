@@ -18,6 +18,7 @@
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/codemirror.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/addon/mode/overlay.min.js"></script> 
@@ -265,11 +266,17 @@ new MyCodemirrorUI( $('#codemirror-markdown-editor-2'), codemirrorOptions );</co
     </table>
   </div>
 
-  <hr>
-  <h2>Generate Table Contents</h2>
-  <!-- TODO-->
+<!-- TODO editor3-->
+  <div class="contents" style="margin: 5px 0;">
+	<hr>
+	<h2>Generate Table Contents</h2>
+	<div class="row" style="margin: 5px 0;">
+  		<div id="editor-3" class="col-md-9"></div>
+  		<div id="toc" class="col-md-3"></div>
+  	</div>
+  </div>
   
-<!-- editor3 -->
+<!-- editor4 -->
   <hr>
   <h2>Use as Angular directive</h2>
   <section data-ng-controller="MyController">
@@ -301,7 +308,7 @@ function controller($scope){
     ...      
 &lt;/body></code></pre>
 
-<!-- end editor 3 -->
+<!-- end editor 4 -->
  
   <footer class="footer">
     <p>&copy; Company 2014</p>
@@ -332,6 +339,14 @@ $(document).ready(function(){
         };
         new MyCodemirrorUI( $('#codemirror-markdown-editor-2'), codemirrorOptions );
         
+    });
+    
+    $.get('headers.md', {}, function(data){
+    	codemirrorOptions = {
+        	tocContainer: "#toc",
+            initValue: data
+        };
+        new MyCodemirrorUI( $('#editor-3'), codemirrorOptions );
     });
     
 	
