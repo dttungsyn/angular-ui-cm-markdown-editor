@@ -151,23 +151,7 @@ window.MyCodemirrorUI = function(iElement, codemirrorOptions){
     this.fullscreenContainer = null;	// fullscreen container
     this.codemirrorElement = null;	//codemirror element
     this.viewState = 0;
-    
-    if ( window.marked ){
-	    // Because highlight.js is a bit awkward at times
-	    var languageOverrides = {
-	      js: 'javascript',
-	      html: 'xml'
-	    };
-	    
-	    window.marked.setOptions({
-		    highlight: function(code, lang){
-		      if(languageOverrides[lang]) lang = languageOverrides[lang];
-		      //return '<a href="#">xxx</a>';
-		      return window.hljs.listLanguages().indexOf(lang) >= 0 ? window.hljs.highlight(lang, code).value : code;
-		    }
-		});
-    }
-    
+
 	this.initialize( iElement, codemirrorOptions );
 }
 
@@ -253,11 +237,7 @@ MyCodemirrorUI.utils = {
  */
 MyCodemirrorUI.defaults = {
 	lineWrapping : true,
-    lineNumbers: true,
     mode: 'gfm',
-    theme: 'default',
-    minHeight: 30,
-    viewportMargin: Infinity
 }
 
 
@@ -267,8 +247,61 @@ MyCodemirrorUI.prototype = {
 	 * TODO
 	 */
 	initialize: function(iElement, codemirrorOptions){
+		
+		function escape(html, encode) {
+		  return html
+		    .replace(!encode ? /&(?!#?\w+;)/g : /&/g, '&amp;')
+		    .replace(/</g, '&lt;')
+		    .replace(/>/g, '&gt;')
+		    .replace(/"/g, '&quot;')
+		    .replace(/'/g, '&#39;');
+		}
+		
+		/*
+		 * Override marked's code render method
+		 */
+		var Renderer = function(){};
+		Renderer.prototype = new window.marked.Renderer();
+		Renderer.prototype.code = function(code, lang, escaped) {
+
+		  if (this.options.highlight) {
+		    var out = this.options.highlight(code, lang);
+		    if (out != null && out !== code) {
+		      escaped = true;
+		      code = out;
+		    }
+		  }
+
+		  if (!lang) {
+		    return '<pre><code>'
+		      + (escaped ? code : escape(code, true))
+		      + '\n</code></pre>';
+		  }
+
+		  return '<pre><code class="'
+		    + escape(lang, true)
+		    + ' hljs">'
+		    + (escaped ? code : escape(code, true))
+		    + '\n</code></pre>\n';
+		};
+		
+		// Because highlight.js is a bit awkward at times
+	    var languageOverrides = {
+	      js: 'javascript',
+	      html: 'xml'
+	    };
+		
+		window.marked.setOptions({
+		  highlight: function (code, lang) {
+			if(languageOverrides[lang]) lang = languageOverrides[lang];
+		    return window.hljs.listLanguages().indexOf(lang) >= 0 ? window.hljs.highlight(lang, code).value : code;
+		  }
+		  , renderer: new Renderer()
+		});
+		
 		var codemirrot;
 		
+		// extend options
 		var codemirrorOptions = $.extend({}, MyCodemirrorUI.defaults, codemirrorOptions);
 		
 		iElement.addClass('ui-codemirror-markdown');

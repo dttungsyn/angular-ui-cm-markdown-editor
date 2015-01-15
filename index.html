@@ -41,6 +41,17 @@
 
 </head>
 <body data-ng-app="MyModule">
+    
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-P4ZQVS"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-P4ZQVS');</script>
+<!-- End Google Tag Manager -->
+
 
 <div class="container">
   <div class="header">
@@ -98,6 +109,7 @@
 
 <!-- editor1 -->
   <div class="contents" style="margin: 5px 0;">
+    <hr>
     <h2>Basic Use</h2>
   	<div id="codemirror-markdown-editor-1"></div>
   	<h4><a style="cursor: pointer">Source</a></h4>
@@ -113,6 +125,7 @@ $(document).ready(function(){
   
 <!-- editor2 -->
   <div class="contents" style="margin: 5px 0;">
+    <hr>
     <h2>Use with self-designed toolbar</h2>
     <!-- toolbar -->
     <div class="btn-toolbar" style="margin: 5px 0;" role="toolbar">
@@ -252,11 +265,12 @@ new MyCodemirrorUI( $('#codemirror-markdown-editor-2'), codemirrorOptions );</co
     </table>
   </div>
 
-
+  <hr>
   <h2>Generate Table Contents</h2>
   <!-- TODO-->
   
 <!-- editor3 -->
+  <hr>
   <h2>Use as Angular directive</h2>
   <section data-ng-controller="MyController">
       <div ng-model="content" ui-codemirror-markdown="editorOptions" style="margin: 5px 0;"></div>
