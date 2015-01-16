@@ -345,6 +345,9 @@ MyCodemirrorUI.prototype = {
 		var t = this;
 		codemirrot.on("change", function(cm, chobj) {
 		  
+		  //set lexer
+		  t.setLexer( window.marked.lexer(cm.getValue()) );
+		  
 		  t.htmlRenderElement.html( window.marked( cm.getValue() ) );
 		  if (t.tocEle) t.tocEle.html( window.marked( t.generateTocMD() ) );//TODO
 		});
@@ -518,6 +521,14 @@ MyCodemirrorUI.prototype = {
 		this.viewState = viewState;
 	},
 	
+	getLexer: function(){
+		return this._lexer;
+	},
+	
+	setLexer: function( tokens ){
+		this._lexer = tokens;
+	},
+	
 	/**
 	 * 
 	 * @param options
@@ -537,7 +548,7 @@ MyCodemirrorUI.prototype = {
 	  }, options);
 
 	  var toc = '';
-	  var tokens = marked.lexer(str);
+	  var tokens = this.getLexer(); //marked.lexer(str);
 	  var tocArray = [];
 
 	  // Remove the very first h1, true by default

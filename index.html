@@ -274,6 +274,41 @@ new MyCodemirrorUI( $('#codemirror-markdown-editor-2'), codemirrorOptions );</co
   		<div id="editor-3" class="col-md-9"></div>
   		<div id="toc" class="col-md-3"></div>
   	</div>
+  	
+  	<p>Like toolbar, we create a dom element to hold table content <code>&lt;div id="toc">&lt;/div></code>, 
+and pass its selector string as a config option <code>{tocContainer: "#toc"}</code>. 
+Table Content HTML which will be rendered inside the container should look like: </p>
+<pre>&lt;ul>
+  &lt;li>&lt;a href="#header-1">Header 1&lt;/a>
+    &lt;ul>
+      &lt;li>&lt;a href="#sub1">Sub1&lt;/a>&lt;/li>
+      &lt;li>&lt;a href="#sub2">Sub2&lt;/a>&lt;/li>
+    &lt;/ul>
+  &lt;/li>
+  &lt;li>&lt;a href="#header-2">Header 2&lt;/a>
+    &lt;ul>
+      &lt;li>&lt;a href="#sub1">Sub1&lt;/a>&lt;/li>
+      &lt;li>&lt;a href="#sub-head-2">Sub head 2&lt;/a>
+        &lt;ul>
+          &lt;li>&lt;a href="#subsub1">Subsub1&lt;/a>&lt;/li>
+        &lt;/ul>
+      &lt;/li>
+    &lt;/ul>
+  &lt;/li>
+&lt;/ul>
+</pre>
+    <p>And you are free to <strong>style it yourself</strong>!</p>
+
+    <h4><a style="cursor: pointer">Source</a></h4>
+<pre><code class="html">&lt;div id="editor-3">&lt;/div>
+&lt;div id="toc">&lt;/div>
+&lt;script type="text/javascript">
+    codemirrorOptions = {
+        tocContainer: "#toc"
+    };
+    new MyCodemirrorUI( $('#editor-3'), codemirrorOptions );
+&lt;/script>
+</code></pre>
   </div>
   
 <!-- editor4 -->
@@ -291,7 +326,7 @@ new MyCodemirrorUI( $('#codemirror-markdown-editor-2'), codemirrorOptions );</co
     .controller('MyController', ['$scope', controller]);
 
 function controller($scope){
-    $scope.content = "#This is codemirror";
+    $scope.content = "#This is Codemirror Markdown Angular directive";
     $scope.editorOptions = {
         lineNumbers: false
     };
