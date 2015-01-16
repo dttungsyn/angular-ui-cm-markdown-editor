@@ -117,3 +117,14 @@ td, th {
 	padding: 4px 10px;
 	border: 1px solid #bbb;
 }
+
+.totop {
+	position: fixed;
+	right: 10px;
+	bottom: 10px;
+	opacity: .5;
+}
+
+.totop:hover {
+	opacity: 1;
+}
