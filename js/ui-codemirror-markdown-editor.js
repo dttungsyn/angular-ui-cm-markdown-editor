@@ -3,9 +3,9 @@
 /**
  * Binds a CodeMirror widget to a <textarea> element.
  */
-angular.module('ui.codemirror', [])
+angular.module('ui-codemirror-markdown', [])
   .constant('uiCodemirrorConfig', {})
-  .directive('uiCodemirror', uiCodemirrorDirective);
+  .directive('uiCodemirrorMarkdown', uiCodemirrorDirective);
 
 /**
  * @ngInject
@@ -19,7 +19,7 @@ function uiCodemirrorDirective($timeout, uiCodemirrorConfig) {
 
       // Require CodeMirror
       if (angular.isUndefined(window.CodeMirror)) {
-        throw new Error('ui-codemirror need CodeMirror to work... (o rly?)');
+        throw new Error('ui-codemirror-markdown need CodeMirror to work... (o rly?)');
       }
 
       //return postLink;
@@ -36,7 +36,7 @@ function uiCodemirrorDirective($timeout, uiCodemirrorConfig) {
     var codemirrorOptions = angular.extend(
       { value: iElement.text() },
       uiCodemirrorConfig.codemirror || {},
-      scope.$eval(iAttrs.uiCodemirror),
+      scope.$eval(iAttrs.uiCodemirrorMarkdown),
       scope.$eval(iAttrs.uiCodemirrorOpts)
     );
 
@@ -45,7 +45,7 @@ function uiCodemirrorDirective($timeout, uiCodemirrorConfig) {
     
     configOptionsWatcher(
 	  mcu.codemirror,
-      iAttrs.uiCodemirror || iAttrs.uiCodemirrorOpts,
+      iAttrs.uiCodemirrorMarkdown || iAttrs.uiCodemirrorOpts,
       scope
     );
 
@@ -151,23 +151,7 @@ window.MyCodemirrorUI = function(iElement, codemirrorOptions){
     this.fullscreenContainer = null;	// fullscreen container
     this.codemirrorElement = null;	//codemirror element
     this.viewState = 0;
-    
-    if ( window.marked ){
-	    // Because highlight.js is a bit awkward at times
-	    var languageOverrides = {
-	      js: 'javascript',
-	      html: 'xml'
-	    };
-	    
-	    window.marked.setOptions({
-		    highlight: function(code, lang){
-		      if(languageOverrides[lang]) lang = languageOverrides[lang];
-		      //return '<a href="#">xxx</a>';
-		      return window.hljs.listLanguages().indexOf(lang) >= 0 ? window.hljs.highlight(lang, code).value : code;
-		    }
-		});
-    }
-    
+
 	this.initialize( iElement, codemirrorOptions );
 }
 
@@ -253,11 +237,7 @@ MyCodemirrorUI.utils = {
  */
 MyCodemirrorUI.defaults = {
 	lineWrapping : true,
-    lineNumbers: true,
     mode: 'gfm',
-    theme: 'default',
-    minHeight: 20,
-    viewportMargin: Infinity
 }
 
 
@@ -267,9 +247,64 @@ MyCodemirrorUI.prototype = {
 	 * TODO
 	 */
 	initialize: function(iElement, codemirrorOptions){
+		
+		function escape(html, encode) {
+		  return html
+		    .replace(!encode ? /&(?!#?\w+;)/g : /&/g, '&amp;')
+		    .replace(/</g, '&lt;')
+		    .replace(/>/g, '&gt;')
+		    .replace(/"/g, '&quot;')
+		    .replace(/'/g, '&#39;');
+		}
+		
+		/*
+		 * Override marked's code render method
+		 */
+		var Renderer = function(){};
+		Renderer.prototype = new window.marked.Renderer();
+		Renderer.prototype.code = function(code, lang, escaped) {
+
+		  if (this.options.highlight) {
+		    var out = this.options.highlight(code, lang);
+		    if (out != null && out !== code) {
+		      escaped = true;
+		      code = out;
+		    }
+		  }
+
+		  if (!lang) {
+		    return '<pre><code>'
+		      + (escaped ? code : escape(code, true))
+		      + '\n</code></pre>';
+		  }
+
+		  return '<pre><code class="'
+		    + escape(lang, true)
+		    + ' hljs">'
+		    + (escaped ? code : escape(code, true))
+		    + '\n</code></pre>\n';
+		};
+		
+		// Because highlight.js is a bit awkward at times
+	    var languageOverrides = {
+	      js: 'javascript',
+	      html: 'xml'
+	    };
+		
+		window.marked.setOptions({
+		  highlight: function (code, lang) {
+			if(languageOverrides[lang]) lang = languageOverrides[lang];
+		    return window.hljs.listLanguages().indexOf(lang) >= 0 ? window.hljs.highlight(lang, code).value : code;
+		  }
+		  , renderer: new Renderer()
+		});
+		
 		var codemirrot;
 		
+		// extend options
 		var codemirrorOptions = $.extend({}, MyCodemirrorUI.defaults, codemirrorOptions);
+		
+		iElement.addClass('ui-codemirror-markdown');
 		
 		if (iElement[0].tagName === 'TEXTAREA') {
 	      // Might bug but still ... not support
@@ -302,18 +337,26 @@ MyCodemirrorUI.prototype = {
 	      }
 	    }
 		
+		if ( codemirrorOptions.tocContainer && typeof(codemirrorOptions.tocContainer) === 'string' ){
+			this.tocEle = $( codemirrorOptions.tocContainer );
+		}
+		
 		//update markdown preview
 		var t = this;
 		codemirrot.on("change", function(cm, chobj) {
 		  
+		  //set lexer
+		  t.setLexer( window.marked.lexer(cm.getValue()) );
+		  
 		  t.htmlRenderElement.html( window.marked( cm.getValue() ) );
+		  if (t.tocEle) t.tocEle.html( window.marked( t.generateTocMD() ) );//TODO
 		});
 		
 		this.codemirror = codemirrot;
 		
 		window.codemirror = codemirrot; //debug
 		
-		codemirrot.setValue("##This is codemirror");
+		if (codemirrorOptions.initValue) codemirrot.setValue( codemirrorOptions.initValue );
 		
 		//editor height fit window
 		/*var editorH = $(".CodeMirror-scroll").height();
@@ -478,6 +521,14 @@ MyCodemirrorUI.prototype = {
 		this.viewState = viewState;
 	},
 	
+	getLexer: function(){
+		return this._lexer;
+	},
+	
+	setLexer: function( tokens ){
+		this._lexer = tokens;
+	},
+	
 	/**
 	 * 
 	 * @param options
@@ -497,7 +548,7 @@ MyCodemirrorUI.prototype = {
 	  }, options);
 
 	  var toc = '';
-	  var tokens = marked.lexer(str);
+	  var tokens = this.getLexer(); //marked.lexer(str);
 	  var tocArray = [];
 
 	  // Remove the very first h1, true by default
@@ -567,6 +618,7 @@ MyCodemirrorUI.prototype = {
 	 */
 	generateTocMD: function(){
 		console.log( this.generate().toc );
+		return this.generate().toc;
 	}
 
 }
